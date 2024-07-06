@@ -1,31 +1,12 @@
-import express from 'express';
-const express = require('express')
-const colors = require('colors')
-const morgan = require('morgan')
-const dotenv = require('dotenv');
-const connectDB = require('./config/db');
+import app from "./app.js";
+import coludinary from "cloudinary"
 
-//dotenv.config
-dotenv.config();
+coludinary.v2.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+})
 
-//mongodb connection
-connectDB();
-
-//rest object
-const app = express();
-
-//middlewares
-app.use(express.json())
-app.use(morgan('dev'))
-
-//routes 
-app.use("/api/v1/user",require('./routes/userRoutes'))
-
-
-//listen port
-
-const port = process.env.PORT || 8080
-app.listen(port, () => {
-    console.log(`Server running in ${process.env.NODE_MODE} Mode on port ${process.env.PORT}
-        `.bgCyan.white);
-    });
+app.listen(process.env.PORT, () =>{
+    console.log(`Server is running on port ${process.env.PORT}`);
+});
