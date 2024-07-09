@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 
+
 const userSchema = new mongoose.Schema({
     firstName:{
         type:String,
@@ -61,7 +62,7 @@ const userSchema = new mongoose.Schema({
     }
 })
 
-userSchema.pre("save" , async function(next){
+userSchema.pre('save' , async function(next){
     if(!this.isModified("password")){
         next();
     }
@@ -77,5 +78,4 @@ userSchema.methods.generateJsonWebToke = function () {
     });
 }
 
-export const User = mongoose.model("Message",userSchema);
-b
+export const User = mongoose.model("User",userSchema);
