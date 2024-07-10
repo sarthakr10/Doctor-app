@@ -1,6 +1,8 @@
 import { catchAsyncErrors } from '../middlewares/catchAsyncErrors.js';
 import  ErrorHandler from '../middlewares/errorMiddleware.js';
 import { User } from '../models/userSchema.js';
+import {generateToken} from "../utils/jwtToken.js"
+
 
 
 export const patientRegister = catchAsyncErrors(async(req,res,next)=>{
@@ -14,10 +16,8 @@ export const patientRegister = catchAsyncErrors(async(req,res,next)=>{
         return next(new ErrorHandler('User already Registered!!',400));
     }
     user = await User.create({firstName,lastName,email,phone,nic , dob,gender,password,role})
-    res.status(200).json({
-        success:true,
-        message: "User Registered"
-        })
+    generateToken(user, "User Registered" , 200,res);
+
 });
 
 
@@ -43,8 +43,44 @@ export const login = catchAsyncErrors(async (req, res, next) => {
     if (role !== user.role) {
         return next(new ErrorHandler(`User Not Found With This Role!`, 400));
       }
-    res.status(200).json({
-        success:true,
-        message: "User Logged in Successfully!"
-        })
-})
+    generateToken(user, "User Logged in Successfully ! " , 200,res);
+});
+
+export const addNewAdmin = catchAsyncErrors(async (req, res, next) => {
+  const { firstName, lastName, email, phone, nic, dob, gender, password } =
+    req.body;
+  if (
+    !firstName ||
+    !lastName ||
+    !email ||
+    !phone ||
+    !nic ||
+    !dob ||
+    !gender ||
+    !password
+  ) {
+    return next(new ErrorHandler("Please Fill Full Form!", 400));
+  }
+
+  const isRegistered = await User.findOne({ email });
+  if (isRegistered) {
+    return next(new ErrorHandler("Admin With This Email Already Exists!", 400));
+  }
+
+  const admin = await User.create({
+    firstName,
+    lastName,
+    email,
+    phone,
+    nic,
+    dob,
+    gender,
+    password,
+    role: "Admin",
+  });
+  res.status(200).json({
+    success: true,
+    message: "New Admin Registered",
+    admin,
+  });
+});
