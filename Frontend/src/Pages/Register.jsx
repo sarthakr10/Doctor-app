@@ -93,7 +93,7 @@ const Register = () => {
           <div>
             <input
               type="number"
-              placeholder="NIC"
+              placeholder="Aadhaar"
               value={nic}
               onChange={(e) => setNic(e.target.value)}
             />
