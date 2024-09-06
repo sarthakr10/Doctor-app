@@ -51,7 +51,7 @@ const userSchema = new mongoose.Schema({
     role:{
         type:String,
         required:true,
-        enum: ["Admin" , "Patient" , "Doctor "],
+        enum: ["Admin" , "Patient" , "Doctor"],
     },
     doctorDepartment:{
         type:String
@@ -59,7 +59,7 @@ const userSchema = new mongoose.Schema({
     docAvatar:{
         public_id : String,
         url: String,
-    }
+    },
 })
 
 userSchema.pre('save' , async function(next){
@@ -72,10 +72,10 @@ userSchema.pre('save' , async function(next){
 userSchema.methods.comparePassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword,this.password);
 };
-userSchema.methods.generateJsonWebToke = function () {
-    return jwt.sign({_id:this._id},process.env.JWT_SECRET_KEY,{
-        expiresIn:process.env.JWT_EXPIRES,
+userSchema.methods.generateJsonWebToken = function () {
+    return jwt.sign({ id: this._id }, process.env.JWT_SECRET_KEY, {
+      expiresIn: process.env.JWT_EXPIRES,
     });
-}
-
-export const User = mongoose.model("User",userSchema);
+  };
+  
+  export const User = mongoose.model("User", userSchema);

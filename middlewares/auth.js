@@ -10,9 +10,10 @@ export const isAdminAuthenticated = catchAsyncErrors(
       const token = req.cookies.adminToken;
       if (!token) {
         return next(
-          new Errorhandler("Dashboard User is not authenticated!", 400)
+          new Errorhandler("Admin User is not authenticated!", 400)
         );
       }
+      //AUTHORIZATION
       const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
       req.user = await User.findById(decoded.id);
       if (req.user.role !== "Admin") {
@@ -30,7 +31,7 @@ export const isPatientAuthenticated = catchAsyncErrors(
     async (req, res, next) => {
       const token = req.cookies.patientToken;
       if (!token) {
-        return next(new Errorhandler("User is not authenticated!", 400));
+        return next(new Errorhandler("PATIENT is not authenticated!", 400));
       }
       const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
       req.user = await User.findById(decoded.id);
