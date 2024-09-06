@@ -9,7 +9,7 @@ const Biography = ({imageUrl}) => {
         </div>
         <div className="banner">
           <p>Biography</p>
-          <h3>Who We Are they</h3>
+          <h3>Who We Are</h3>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
             blanditiis sequi aperiam. Debitis fugiat harum ex maxime illo
